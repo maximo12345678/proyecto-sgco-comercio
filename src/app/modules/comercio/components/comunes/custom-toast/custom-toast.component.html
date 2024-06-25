@@ -1,0 +1,29 @@
+<div class="custom-toast" [class.active]="showModal" [class.error]="!success">
+    <div class="toast-content">
+        <div *ngIf="success" class="mensaje-satisfactorio-icono">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white">
+                <path
+                    d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+            </svg>
+        </div>
+        <div *ngIf="!success" class="mensaje-satisfactorio-icono error">
+        <svg class="close-modal-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960"
+            width="20" fill="white">
+            <path
+                d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+        </svg>
+        </div>
+        <div class="message">
+            <span class="message-text text-1"> {{success ? 'Operacion Exitosa' : 'Error'}} </span>
+            <span class="message-text text-2">{{resultMessage}}</span>
+        </div>
+    </div>
+    <button class="modal-close" (click)="closeModal()">
+        <svg class="close-modal-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960"
+            width="20">
+            <path
+                d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+        </svg>
+    </button>
+    <div class="progress" [class.active]="showModal" [class.error]="!success"></div>
+</div>

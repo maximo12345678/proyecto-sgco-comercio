@@ -1,0 +1,190 @@
+/* .contenedor-webprivada{
+    margin-top: 7.5rem;
+    margin-left: 15px;
+    margin-right: 15px;
+} */
+
+
+/*SIDEBAR AUXILIAR*/
+.sidebar-aux{
+    position: fixed; /*asi permanece en todo el alto de la pagina*/
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200px;
+    box-shadow: 3px 0 5px rgba(0, 0, 0, 0.2);
+    justify-content: space-between;
+    flex-direction: column;
+    display: flex;
+    z-index: 100;
+
+    background-color: var(--color-secundario);
+    color: white;
+}
+
+
+.sidebar-menu-aux{
+    margin-top: 90px;
+    flex: 1;
+}
+
+.sidebar-menu-aux-item {
+    width: 100%;
+    border-bottom: 1px solid var(--color-apoyo3);
+    padding: 15px;
+}
+
+.sidebar-menu-aux-item:hover{
+    background-color: var(--color-primario);
+    cursor: pointer;
+}
+
+
+.sidebar-menu-aux-item-texto{
+    margin-left: 8px;
+    font-size: 13px;
+}
+
+
+.seleccionado{
+    background-color: var(--color-primario);
+}
+
+
+
+
+/*NAVBAR AUXILIAR*/
+.navbar-aux{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 100;
+
+    padding: 7px 40px;
+    gap: 10px;
+    position: fixed;
+    width: auto;
+    height: 72px;
+    left: 0px;
+    right: 0;
+    top: 0;
+
+    background-color: var(--color-secundario);
+}
+
+
+.navbar-aux-logo{
+    z-index: 2;
+    left: 8px;
+    right: 18.22%;
+    top: 0px;
+    width: 120px;
+    height: 70px;
+}
+
+.navbar-aux-icono i{
+    color: white;
+}
+
+
+
+.navbar-aux-sub{ /*SOLO para que no se vea el scroll de contracargos pasar, lo tapamos con esto*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    z-index: 100;
+
+    position: fixed;
+    width: auto;
+    height: 72px;
+    left: 0px;
+    right: 0;
+    top: 48px;
+
+    background-color: white;
+}
+
+
+
+
+
+
+
+
+
+/*Pantalla entera LOGIN*/
+.contenedor-login {
+    margin: 0;
+    background-color: var(--color-apoyo1);
+    margin-top: auto;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Cuadro central login*/
+.cuadro-login {
+    background-color: #fff;
+    padding: 45px 164px 56px 164px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.cuadro-login-titulo {
+    color: var(--color-secundario);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 32px;
+}
+
+.cuadro-login-subtitulo {
+    color: var(--color-secundario);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 25px;
+    margin-bottom: 25px;
+}
+
+.cuadro-login-logoKlap {
+    width: 200px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+
+
+
+/* Formulario login*/
+.form-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.posicion-boton-ingresar {
+    margin-top: 20px;
+}
+
+
+
+
+
+@media (max-width: 580px) {
+    .cuadro-login {
+        padding: 10px 34px 26px 40px;
+    }
+}

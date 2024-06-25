@@ -1,0 +1,144 @@
+<div class="container-configuraciones" style="overflow:hidden">
+
+    <h4 class="titulo-seccion"> Configuración de monto mínimo</h4>
+
+    <div class="filtros-content" id="filtros-desktop">
+        <div class="actions-container" [class.monto-input-visible]="!noneSelected">
+            <div class="mass-editor-container" [class.hidden]="noneSelected">
+                <div class="espacio"></div>
+                <div class="content-config-monto">
+                    <div class="monto-input-wrapper" [class.darker]="!!montoInput && !montoComercioCheckbox">
+                        <input type="text" class="monto-input" placeholder="Monto minimo" [(ngModel)]="montoInput"
+                            name="montoInput" [disabled]="montoComercioCheckbox">
+                        <div *ngIf="isInputInvalid" class="monto-error-message">Solo valores enteros no negativos.</div>
+                        <button class="button boton-guardar boton-aceptar-nuevo" [disabled]="botonAplicarDeshabilitado"
+                            (click)="openModalEntera()">Aplicar</button>
+                    </div>
+                    <div class="options-radio col">
+                        <div class="options-radio-element">
+                            <label for="option1" class="checkbox-monto-comercio">
+                                <input class="custom-checkbox" type="checkbox" id="option1" name="option1"
+                                    [(ngModel)]="montoComercioCheckbox" #booleanField="ngModel">
+                                <span class="checkmark"></span>
+                                <span>Establecer monto mínimo por defecto ($ {{formatearMonto(comercio.montoMinimo)}})
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <app-buscador class="align-end" (onSearchChange)="onSearch($event)"
+                [placeholder]="'Buscar subcomercio'"></app-buscador>
+        </div>
+
+        <app-modal-confirmacion *ngIf="mostrarModalConfirmacion" [title]="modalParam1" [subtitle]="modalParam2"
+            (cancelOperation)="closeModalEntera()"
+            (confirmAction)="actualizarConfigSubcomercios()"></app-modal-confirmacion>
+
+        <app-modal-gestion-config *ngIf="mostrarModalGestionar" (closeModalEvent)="onModalClose()"
+            [subcomercio]="subcomercioSeleccionado" [comercio]="comercio"></app-modal-gestion-config>
+
+        <app-custom-toast *ngIf="showToast" [resultMessage]="mensajeResultadoPutMasivo" [success]="putMasivoOk"
+            (toastFinished)="resetToastVars()"></app-custom-toast>
+
+        <div class="espacio"></div>
+
+        <div class="tabla-content">
+            <div class="tabla-content-element">
+                <table class="tabla-contracargos" aria-label="Tabla configuraciones">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="check-all-n" name="check-all-i" [(ngModel)]="allSelected"
+                                    ngDefaultControl>
+                            </th>
+
+                            <th>Subcomercio </th>
+                            <th>Monto mínimo </th>
+                            <th>Gestionar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <div *ngIf="mensajeRespuestaSubcomercios && totalRegistrosPagination === 0"
+                            class="mensaje-contracargos">
+                            {{mensajeRespuestaSubcomercios}}
+                        </div>
+                        <tr *ngFor="let subcomercio of subcomerciosCheck; index as idx"
+                        [ngClass]="{'registro-par': idx % 2 == 0, 'registro-impar': idx % 2 != 0}">
+                            <td><input type="checkbox" [id]="'cbx'+idx" [name]="'ncbx'+idx"
+                                    [(ngModel)]="subcomercio.selected"></td>
+                            <td>{{ subcomercio.nombreFantasiaLocal }}</td>
+                            <td>{{ subcomercio.montoMinimo }}</td>
+                            <td class="tabla-campo-gestionar">
+                                <button (click)="openModalGestionarSubcomercio(subcomercio)" data-bs-toggle="modal"
+                                    data-bs-target="#modalGestionarCaso">
+                                    <span class="desaparecer">Gestionar</span>
+
+
+                                    <svg fill="#005896" class="espacio-costado" width="16" height="16"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path
+                                            d="M352 320c88.4 0 160-71.6 160-160c0-15.3-2.2-30.1-6.2-44.2c-3.1-10.8-16.4-13.2-24.3-5.3l-76.8 76.8c-3 3-7.1 4.7-11.3 4.7H336c-8.8 0-16-7.2-16-16V118.6c0-4.2 1.7-8.3 4.7-11.3l76.8-76.8c7.9-7.9 5.4-21.2-5.3-24.3C382.1 2.2 367.3 0 352 0C263.6 0 192 71.6 192 160c0 19.1 3.4 37.5 9.5 54.5L19.9 396.1C7.2 408.8 0 426.1 0 444.1C0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9L297.5 310.5c17 6.2 35.4 9.5 54.5 9.5zM80 408a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                                    </svg>
+
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+
+            <div *ngIf="loadingSubcomercios">
+                <div class="loading-wrapper">
+                    <div class="loading-text">Cargando</div>
+                    <div class="loading-circle circle"></div>
+                    <div class="loading-circle-small circle"></div>
+                </div>
+            </div>
+
+
+            <div class="tabla-content-paginacion">
+                <div *ngIf="totalRegistrosPagination > 0" class="cantidad-resultados-tabla-contracargos">
+                    {{ rangoInferior }} - {{ rangoSuperior }} de {{ totalRegistrosPagination }}
+                </div>
+
+                <div *ngIf="mensajeRespuestaSubcomercios && subcomercios.length === 0" class="mensaje-tablas">
+                    <span><i class="fas fa-exclamation-circle"></i> No se han encontrado resultados de
+                        subcomercios</span>
+                </div>
+
+                <div class="espacio"></div>
+
+                <div *ngIf="totalRegistrosPagination > 0" class="paginacion-tabla-contracargos">
+                    <button class="pagination-button" [disabled]="paginaActual === 1"
+                        (click)="cambiarPagina(paginaActual - 1)">
+                        <svg class="pagination-arrow-icon" xmlns="http://www.w3.org/2000/svg" height="18"
+                            viewBox="0 -960 960 960" width="18">
+                            <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+                        </svg>
+                    </button>
+
+                    <ng-container *ngFor="let pagina of paginasArray()">
+                        <button class="pagination-page" (click)="cambiarPagina(pagina)"
+                            [class.active]="pagina === paginaActual"
+                            [ngClass]="{ 'boton-pagina-seleccionado': pagina === paginaActual }">
+                            {{ pagina }}
+                        </button>
+                    </ng-container>
+
+                    <button class="pagination-button" [disabled]="paginaActual === totalPaginas"
+                        (click)="cambiarPagina(paginaActual + 1)">
+                        <svg class="pagination-arrow-icon" xmlns="http://www.w3.org/2000/svg" height="18"
+                            viewBox="0 -960 960 960" width="18">
+                            <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <i class="fas fa-window-minimize fa-check"></i>
+    </div>

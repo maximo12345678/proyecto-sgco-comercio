@@ -1,0 +1,250 @@
+/* MODAL GESTIONAR CASO */
+.modal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Cambiado a 'center' */
+    position: fixed;
+    top: 65px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-fondo-modales);
+    z-index: 9999;
+}
+
+.modal-content {
+    overflow-y: scroll;
+    width: 60%;
+    height: 100%;
+    background-color: white;
+    padding: 10px 20px 0px 20px;
+    box-sizing: border-box;
+    border-radius: 20px 0px 0px 20px;
+    margin-top: 1rem;
+}
+
+
+.modal-content-cuerpo{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.modal-content-titulo {
+    color: var(--color-secundario);
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 32px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    color: var(--color-secundario);
+}
+
+.cuerpo-scrollable {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+
+@media (max-width: 500px){
+    .modal-datos-contracargo-content-botones{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+
+
+/* RECHAZAR CASO - COMERCIO */
+.modal-rechazar-caso{
+    padding: 0px 20px 20px 30px;
+}
+
+.modal-rechazar-caso-cuerpo {
+    margin-top: 15px;
+}
+
+.advertencia-maximo-archivos{
+    color: var(--color-apoyo2);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 21px;
+}
+
+.modal-contenedor-archivos-subidos{
+    margin-top: 20px;
+}
+
+
+
+/*INPUT ARRASTRAR ARCHIVOS*/
+.input-arrastrar-archivos {
+    margin: 20px 0px 0px 0px;
+    border: 2px dashed var(--color-variante-secundario);
+    border-radius: 4px;
+    padding: 30px 20px 20px 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.input-arrastrar-archivos:hover {
+    border-color: #dad9d9;
+}
+
+
+.input-arrastrar-archivos-titulo{
+    font-weight: 600;
+    size: 16px;
+    line-height: 25px;
+    color: var(--color-secundario);
+    margin-top: 15px;
+}
+
+.input-arrastrar-archivos-subtitulo{
+    font-size: 14px;
+    color: var(--color-apoyo2);
+}
+
+.input-arrastrar-archivos-icono{
+    background-color: var(--color-7);
+    border-radius: 100%;
+    padding: 15px;
+    color: var(--color-variante-secundario);
+}
+
+.input-arrastrar-archivos-icono:hover{
+    background-color: var(--color-8);
+}
+
+
+
+
+/*INPUT OBSERVACIONES*/
+.modal-input-observaciones{
+    margin-top: 30px;
+}
+
+.input-observaciones{
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--color-apoyo2);
+    border-radius: 5px;
+    padding: 9px 10px 9px 10px;
+}
+
+
+
+
+
+
+/* MENSAJE SATISFACTORIO */
+.mensaje-satisfactorio {
+    display: flex;
+    flex-direction: column;
+    padding: 80px;
+    align-items: center;
+    background-color: white;
+}
+
+.mensaje-satisfactorio-icono {
+    color: white;
+    background-color: var(--color-primario);
+    padding: 10px;
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.mensaje-satisfactorio-icono.error{
+    background-color: var(--color-error);
+}
+
+.mensaje-satisfactorio-icono.error i{
+    padding-bottom: 22px;
+    margin-left: 0px;
+}
+
+.mensaje-satisfactorio-icono.warning{
+    background-color: var(--color-alert);
+}
+
+.mensaje-satisfactorio-icono.warning i{
+    padding-bottom: 22px;
+    margin-left: 0px;
+}
+
+
+.mensaje-satisfactorio-texto {
+    font-weight: 600;
+    text-align: center;
+    font-size: 23px;
+    line-height: 35px;
+    color: var(--color-secundario);
+}
+
+.mensaje-satisfactorio-texto-subtitulo{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 25px;
+    color: var(--color-apoyo2);
+}
+
+.mensaje-satisfactorio-boton-entendido {
+    font-weight: 500;
+    size: 13px;
+    line-height: 21px;
+    color: var(--color-secundario);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: white;
+}
+
+.mensaje-satisfactorio-boton-entendido:hover {
+    background-color: var(--color-apoyo1);
+}
+
+.mensaje-satisfactorio-boton-entendido.filled {
+  background-color: var(--color-primario);
+  color: var(--color-7);
+  padding: 8px;
+}
+
+.mensaje-satisfactorio-boton-entendido.error {
+  background-color: var(--color-error);
+  color: var(--color-apoyo1);
+}
+
+
+
+
+@media(max-width: 992px) {
+    .modal-content {
+        width: 80%;
+    }
+
+}
+
+
+
+@media(max-width: 750px) {
+    .modal-content {
+        width: 95%;
+    }
+}

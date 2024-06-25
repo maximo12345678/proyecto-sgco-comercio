@@ -1,0 +1,562 @@
+<div style="overflow:hidden">
+
+    <div class="indicadores-content">
+        <div *ngIf="indicadores.length > 1" class="indicadores-menu">
+            <div *ngFor="let indicador of indicadores">
+                <app-indicadores [indicador]="indicador"></app-indicadores>
+            </div>
+        </div>
+
+        <div *ngIf="indicadores.length == 0" class="indicadores-menu loading">
+            <span>Cargando indicadores...</span>
+        </div>
+    </div>
+
+
+    <div class="herramientas-content">
+
+        <div class="estados-content">
+            <div class="estados-menu">
+                <div *ngFor="let item of estadosMenuButtons" class="estado">
+                    <button class="estado-nombre relative"
+                        [ngClass]="{'seleccionado': botonEstadoSeleccionado === item.buttonNumber}"
+                        (click)="seleccionarBotonEstado(item.buttonNumber)"> {{item.visibleText}}
+                        <span class="estado-cantidad" [ngClass]="{
+                                'loading': item.loading,
+                                'seleccionado': botonEstadoSeleccionado === item.buttonNumber,
+                                'todos': item.buttonNumber == botonEstadosEnum.Todos
+                                }">
+                            {{item.count}}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="espacio"></div>
+
+
+
+        <app-buscador (onSearchChange)="onSearch($event)" [placeholder]="'Buscar por caso...'"></app-buscador>
+
+    </div>
+
+
+    <div class="filtros-content" id="filtros-desktop">
+
+        <div class="filtros-content-element">
+
+
+            <app-filtros-cbk *ngIf="!mostrarModalDocYForm && !mostrarModalGestionarCaso"
+                (onSelectionChange)="actualizarFiltrosMarcaEstado($event)" [initialSelection]="initialSelection"
+                [filtrosConfig]="filtrosConfig"></app-filtros-cbk>
+
+
+        </div>
+
+        <div class="espacio"></div>
+
+        <div class="filtros-content-element">
+            <div class="filtros-fechas">
+
+                <button [ngClass]="{'filtros-fechas-boton': true, 'seleccionado': botonFechaSeleccionado === 1}"
+                    (click)="seleccionarBotonFiltroDias(1, 7)">7 Días
+                </button>
+
+                <div class="espacio"></div>
+
+                <button [ngClass]="{'filtros-fechas-boton': true, 'seleccionado': botonFechaSeleccionado === 2}"
+                    (click)="seleccionarBotonFiltroDias(2, 10)">10 Días
+                </button>
+
+                <div class="espacio"></div>
+
+                <button [ngClass]="{'filtros-fechas-boton': true, 'seleccionado': botonFechaSeleccionado === 3}"
+                    (click)="seleccionarBotonFiltroDias(3, 20)">20 Días
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="filtros-content-responsive">
+
+        <app-filtros-cbk *ngIf="!mostrarModalDocYForm && !mostrarModalGestionarCaso"
+            (onSelectionChange)="actualizarFiltrosMarcaEstado($event)" [initialSelection]="initialSelection"
+            [filtrosConfig]="filtrosConfig" [isResponsive]="true"></app-filtros-cbk>
+
+    </div>
+
+
+
+    <div class="tabla-content">
+        <div class="tabla-content-element">
+            <table class="tabla-contracargos">
+                <thead>
+                    <tr>
+                        <th>Caso</th>
+                        <th>Recepción</th>
+                        <th>Motivo</th>
+                        <th>Subcomercio</th>
+                        <th>Estado</th>
+                        <th>Etapa</th>
+                        <th>Monto</th>
+                        <th>Días</th>
+                        <th>Gestionar</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <div *ngIf="objResContracargos.message && totalRegistrosPagination === 0" class="mensaje-contracargos">
+                    NO SE ENCONTRARON DATOS
+                </div>
+                <tbody>
+                    <ng-container *ngFor="let contracargo of contracargos; let i = index">
+                        <tr [ngClass]="{'registro-par': i % 2 == 0, 'registro-impar': i % 2 != 0}">
+                            <td title="{{contracargo.idMarca}}"
+                                class="no-aplicar-estilos-campo-limite barra-color-verde">
+                                <div class="tabla-campo-caso-id">
+                                    {{contracargo.nombreMarca[0].toUpperCase()}}{{contracargo.idMarca}}</div>
+                                <div class="tabla-campo-caso-marca">{{contracargo.nombreMarca}}</div>
+                            </td>
+                            <td title="{{formatFecha(contracargo.recepcion)}}">{{formatFecha(contracargo.recepcion)}}
+                            </td>
+                            <td title="{{contracargo.motivoId}}">{{contracargo.motivoId}}</td>
+                            <td title="{{contracargo.nombreComercio}}">{{contracargo.nombreComercio}}</td>
+                            <td title="{{contracargo.estado}}">{{contracargo.estado}}</td>
+                            <td title="{{contracargo.etapaDesc}}">{{contracargo.etapaDesc}}</td>
+                            <td title="{{contracargo.montoCbk}}">${{formatearMonto(contracargo.montoCbk)}}</td>
+                            <td>{{contracargo.diasParaCierre}}/{{MAX_DIAS_PARA_CIERRE}}</td>
+                            <td class="tabla-campo-gestionar">
+                                <button class="hover-icono" 
+                                    (click)="cambiarCasoSeleccionado(contracargo); changeModalGestionarCaso()"
+                                    data-bs-toggle="modal" data-bs-target="#modalGestionarCaso">
+                                    <span>{{obtenerNombreBotonOperaciones(contracargo.estadoId)}}</span>
+                                    <svg *ngIf="obtenerNombreBotonOperaciones(contracargo.estadoId) == 'Ver'"
+                                        fill="#002B49" height="18" width="18" class="espacio-costado"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path fill="currentColor"
+                                            d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z">
+                                        </path>
+                                    </svg>
+                                    <svg *ngIf="obtenerNombreBotonOperaciones(contracargo.estadoId) == 'Gestionar'"
+                                        fill="#002B49" class="espacio-costado" width="16" height="16"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path fill="currentColor"
+                                            d="M352 320c88.4 0 160-71.6 160-160c0-15.3-2.2-30.1-6.2-44.2c-3.1-10.8-16.4-13.2-24.3-5.3l-76.8 76.8c-3 3-7.1 4.7-11.3 4.7H336c-8.8 0-16-7.2-16-16V118.6c0-4.2 1.7-8.3 4.7-11.3l76.8-76.8c7.9-7.9 5.4-21.2-5.3-24.3C382.1 2.2 367.3 0 352 0C263.6 0 192 71.6 192 160c0 19.1 3.4 37.5 9.5 54.5L19.9 396.1C7.2 408.8 0 426.1 0 444.1C0 481.6 30.4 512 67.9 512c18 0 35.3-7.2 48-19.9L297.5 310.5c17 6.2 35.4 9.5 54.5 9.5zM80 408a24 24 0 1 1 0 48 24 24 0 1 1 0-48z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </td>
+                            <td>
+                                <button class="boton-detalle-tabla" (click)="toggleDetails(i)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="detailsIndex === i" class="detalle-info">
+                            <td colspan="10">
+                                <div class="content-info">
+                                    <b class="detalle-info-titulo">Recepción: </b> 
+                                    <div class="spacer"></div>
+                                    <span class="detalle-info-valor">{{formatFecha(contracargo.recepcion)}}</span>
+                                </div>
+                                <div class="content-info">
+                                    <b class="detalle-info-titulo">Motivo: </b> 
+                                    <div class="spacer"></div>
+                                    <span class="detalle-info-valor">{{contracargo.motivoId}}</span>
+                                </div>
+                                <div class="content-info">
+                                    <b class="detalle-info-titulo">SubComercio: </b> 
+                                    <div class="spacer"></div>
+                                    <span class="detalle-info-valor">{{contracargo.nombreComercio}}</span>
+                                </div>
+                                <div class="content-info">
+                                    <b class="detalle-info-titulo">Etapa: </b> 
+                                    <div class="spacer"></div>
+                                    <span class="detalle-info-valor">{{contracargo.etapaDesc}}</span>
+                                </div>
+                                <div class="content-info">
+                                    <b class="detalle-info-titulo">Estado: </b> 
+                                    <div class="spacer"></div>
+                                    <span class="detalle-info-valor">{{contracargo.estado}}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+        </div>
+        <div *ngIf="loadingTablaContracargos">
+            <div class="loading-wrapper">
+                <div class="loading-text">Cargando</div>
+                <div class="loading-circle circle"></div>
+                <div class="loading-circle-small circle"></div>
+            </div>
+        </div>
+
+
+        <div class="tabla-content-paginacion">
+            <div *ngIf="totalRegistrosPagination > 0" class="cantidad-resultados-tabla-contracargos">
+                {{ rangoInferior }} - {{ rangoSuperior }} de {{ totalRegistrosPagination }}
+            </div>
+
+            <div *ngIf="objResContracargos.message && !contracargos" class="mensaje-tablas">
+                <span><i class="fas fa-exclamation-circle"></i> No se han encontrado resultados de contracargos</span>
+            </div>
+
+            <div class="espacio"></div>
+
+            <div *ngIf="totalRegistrosPagination > 0" class="paginacion-tabla-contracargos">
+                <button class="pagination-button" [disabled]="paginaActual === 1"
+                    (click)="cambiarPagina(paginaActual - 1)">
+                    <svg class="pagination-arrow-icon" xmlns="http://www.w3.org/2000/svg" height="18"
+                        viewBox="0 -960 960 960" width="18">
+                        <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+                    </svg>
+                </button>
+
+                <ng-container *ngFor="let pagina of paginasArray()">
+                    <button class="pagination-page" (click)="cambiarPagina(pagina)"
+                        [class.active]="pagina === paginaActual"
+                        [ngClass]="{ 'boton-pagina-seleccionado': pagina === paginaActual }">
+                        {{ pagina }}
+                    </button>
+                </ng-container>
+
+                <button class="pagination-button" [disabled]="paginaActual === totalPaginas"
+                    (click)="cambiarPagina(paginaActual + 1)">
+                    <svg class="pagination-arrow-icon" xmlns="http://www.w3.org/2000/svg" height="18"
+                        viewBox="0 -960 960 960" width="18">
+                        <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+                    </svg>
+                </button>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <i class="fas fa-window-minimize fa-check"></i>
+
+
+
+
+
+
+    <!-- Modal Gestionar Caso -->
+
+    <app-modal-gestion-cbk *ngIf="mostrarModalGestionarCaso" (closeModalEvent)="onModalClose()"
+        [contracargo]="casoSeleccionado"></app-modal-gestion-cbk>
+
+
+    <!-- Modal para visualizar los documents de evidencia y completar el formulario -->
+    <div class="modal-2-container" *ngIf="mostrarModalDocYForm">
+
+        <div class="modal-2-content">
+
+            <div class="modal-2-content-visualizador">
+
+                <h2 class="modal-2-content-visualizador-titulo">Evidencia 1.pdf</h2>
+
+                <div class="cuerpo-scrollable">
+                    <div class="visualizador">
+                        <img alt="Imag visualizador" [src]="imageSrc" />
+                    </div>
+                </div>
+
+
+                <div class="contenedor-boton-descargartodo">
+                    <div></div>
+                    <button class="boton-descargar-todo"><i class="fas fa-download"></i> Descargar todo</button>
+                </div>
+
+            </div>
+
+
+            <div class="modal-2-content-formularios">
+                <div class="cuerpo-scrollable">
+
+                    <div class="modal-2-content-formularios-cabecera">
+
+                        <div class="modal-2-content-formularios-cabecera-labels">
+                            <span
+                                [ngClass]="{'modal-2-content-formularios-cabecera-labels-title' : true, 'activa' : this.etapaFormulario>= 1}">Validar
+                                Evidencia</span>
+                            <span
+                                [ngClass]="{'modal-2-content-formularios-cabecera-labels-title' : true, 'activa' : this.etapaFormulario>= 2}">Configurar
+                                Pre Arbitraje</span>
+                            <span
+                                [ngClass]="{'modal-2-content-formularios-cabecera-labels-title' : true, 'activa' : this.etapaFormulario>= 3}">Seleccionar
+                                documentos</span>
+                        </div>
+
+                        <div class="modal-2-content-formularios-cabecera-seguimiento">
+                            <div [ngClass]="{
+                            'circulo': true,
+                            'circulo-etapa-activa': this.etapaFormulario >= 1,
+                            'circulo-etapa-completa': this.etapaFormulario >= 2 }"></div>
+                            <div [ngClass]="{'barra': true, 'barra-etapa-activa': etapaFormulario >= 2}"></div>
+                            <div [ngClass]="{
+                            'circulo': true,
+                            'circulo-etapa-activa': this.etapaFormulario === 2,
+                            'circulo-etapa-completa': this.etapaFormulario === 3 }"></div>
+                            <div [ngClass]="{'barra': true, 'barra-etapa-activa': etapaFormulario === 3}"></div>
+                            <div [ngClass]="{
+                            'circulo': true,
+                            'circulo-etapa-activa': this.etapaFormulario === 3}"></div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+                    <div *ngIf="etapaFormulario === 1" class="validar-evidencia">
+                        <h2 class="titulo-etapa">VALIDAR EVIDENCIA</h2>
+                        <span>Para iniciar con el Pre Arbitraje debes revisar/validar la evidencia.</span>
+
+                        <div class="modal-datos-contracargo-box">
+
+                            <div class="modal-datos-contracargo-content cabecera">
+                                <div class="modal-datos-contracargo-content-cabecera">
+                                    <div class="item">
+                                        <div class="cabecera-nombre">CASO</div>
+                                        <div class="cabecera-valor">V20231456795</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-datos-contracargo-content">
+                                <div class="subtitulo">Criterios de validación</div>
+                                <form>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" name="checkbox1">
+                                            <span class="checkmark"></span>
+                                            Boleta electrónica validada
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" name="checkbox2">
+                                            <span class="checkmark"></span>
+                                            Certificado de recepción de compra/venta
+                                        </label>
+                                    </div>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-container">
+                                            <input type="checkbox" name="checkbox3">
+                                            <span class="checkmark"></span>
+                                            Fecha de compra
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div *ngIf="etapaFormulario === 2" class="configurar-prearbitraje">
+                        <h2 class="titulo-etapa">CONFIGURAR PRE ARBITRAJE</h2>
+
+                        <div class="modal-datos-contracargo-box">
+
+                            <div class="modal-datos-contracargo-content cabecera">
+                                <div class="modal-datos-contracargo-content-cabecera">
+                                    <div class="item">
+                                        <div class="cabecera-nombre">CASO</div>
+                                        <div class="cabecera-valor">V20231456795</div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="cabecera-estado">Recibido</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-datos-contracargo-content">
+
+                                <div class="lista-datos">
+                                    <div class="lista-datos-elemento">
+                                        <div class="item">
+                                            <div class="item-nombre">ID</div>
+                                            <div class="item-valor">1234789764</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="lista-datos-elemento">
+                                        <div class="item">
+                                            <div class="item-nombre">Comercio</div>
+                                            <div class="item-valor">La Honoria</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="lista-datos-elemento">
+                                        <div class="item">
+                                            <div class="item-nombre">Motivo</div>
+                                            <div class="item-valor">10.4 - Fraude</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="lista-datos-elemento">
+                                        <div class="item">
+                                            <div class="item-nombre">Marca</div>
+                                            <div class="item-valor">VISA</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="lista-datos-elemento">
+                                        <div class="item">
+                                            <div class="item-nombre">Monto TRX</div>
+                                            <div class="item-valor">$350.000 CLP</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="lista-datos-elemento">
+                                        <div class="item">
+                                            <div class="item-nombre">Merchant</div>
+                                            <div class="item-valor">12</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="configurar-prearbitraje-formulario">
+                            <h3 class="subtitulo2">Información</h3>
+
+                            <form>
+                                <div class="contenedor-configuracion-debito-inicial-element">
+                                    <label for="" class="title-input">¿Deseas cambiar el monto a disputar?</label>
+                                </div>
+
+                                <div class="inputs-fila">
+                                    <div class="input-container">
+                                        <input placeholder="Monto a disputar" type="number" id="dias"
+                                            class="input-field">
+                                        <label for="dias" class="input-label">Monto a disputar</label>
+                                    </div>
+                                    <div class="input-container">
+                                        <input placeholder="Motivo a disputar" type="number" id="dias"
+                                            class="input-field">
+                                        <label for="dias" class="input-label">Motivo a disputar</label>
+                                    </div>
+                                </div>
+
+                                <div class="lista-desplegable" [class.open]="listaDesplegable2">
+                                    <label for="">¿Deseas cambiar el monto a disputar? </label>
+                                    <button class="lista-desplegable-button"
+                                        (click)="listaDesplegable2 = !listaDesplegable2">
+                                        Seleccione una opcion<i class="fas fa-chevron-down"
+                                            [class.rotate]="listaDesplegable2"
+                                            [class.change-color]="listaDesplegable2"></i>
+                                    </button>
+                                    <ul class="lista-desplegable-list">
+                                        <li class="lista-desplegable-item">Opcion 1</li>
+                                        <li class="lista-desplegable-item">Opcion 2</li>
+                                        <li class="lista-desplegable-item">Opcion 3</li>
+                                        <li class="lista-desplegable-item">Opcion 4</li>
+                                    </ul>
+                                </div>
+
+                                <div class="espacio-abajo "></div>
+
+                                <div class="lista-desplegable" [class.open]="listaDesplegable3">
+                                    <label for="">Tipo de evidencia convincente</label>
+                                    <button class="lista-desplegable-button"
+                                        (click)="listaDesplegable3 = !listaDesplegable3">
+                                        Seleccione una opcion<i class="fas fa-chevron-down"
+                                            [class.rotate]="listaDesplegable3"
+                                            [class.change-color]="listaDesplegable3"></i>
+                                    </button>
+                                    <ul class="lista-desplegable-list">
+                                        <li class="lista-desplegable-item">Opcion 1</li>
+                                        <li class="lista-desplegable-item">Opcion 2</li>
+                                        <li class="lista-desplegable-item">Opcion 3</li>
+                                        <li class="lista-desplegable-item">Opcion 4</li>
+                                    </ul>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+
+
+                    <div *ngIf="etapaFormulario === 3" class="seleccion-documentos">
+                        <h2 class="titulo-etapa">SELECCIONAR DOCUMENTOS</h2>
+                        <span>Adjunta los documentos de evidencia que deseas.</span>
+                        <div class="espacio-abajo"></div>
+                        <span class="subtitulo3">Puedes seleccionar máximo 5 archivos.</span>
+
+
+                        <div class="espacio-abajo"></div>
+
+            
+                        <div class="espacio-abajo"></div>
+
+                        <label class="boton-notificar">
+                            <input type="file" class="ocultar-input" accept=".pdf, .jpg, .jpeg, .png" multiple
+                                (change)="handleFileInput($event)">
+                            <span><i class=" fas fa-upload"></i> Subir archivos</span>
+                        </label>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="formularios-botonera">
+                    <div class="modal-datos-contracargo-content-botones">
+                        <div class="modal-datos-contracargo-content-botones-item">
+                            <button class="boton-cancelar" (click)="changeModalDocYForm()">Cancelar</button>
+                        </div>
+
+                        <div class="espacio"></div>
+
+                        <div class="modal-datos-contracargo-content-botones-item">
+                            <button class="boton-guardar" *ngIf="etapaFormulario > 1"
+                                (click)="anteriorEtapa()">Atras</button>
+                        </div>
+
+                        <div class="modal-datos-contracargo-content-botones-item">
+                            <button class="boton-guardar" *ngIf="etapaFormulario === 1"
+                                (click)="anteriorEtapa()">Rechazar
+                                Evidencia</button>
+                        </div>
+
+                        <div class="modal-datos-contracargo-content-botones-item">
+                            <button class="boton-gestion-caso primario" *ngIf="etapaFormulario < 3"
+                                (click)="siguienteEtapa(etapaFormulario+1)">Continuar</button>
+                        </div>
+
+                        <div class="modal-datos-contracargo-content-botones-item">
+                            <button (click)="changeModalDocYForm(); gestionCaso('SE HA CONFIGURADO EL PRE ARBITRAJE')"
+                                class="boton-gestion-caso primario" *ngIf="etapaFormulario === 3">Guardar y Pre
+                                Arbitrar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="espacio-abajo"></div>
+
+
+        </div>
+    </div>
+</div>

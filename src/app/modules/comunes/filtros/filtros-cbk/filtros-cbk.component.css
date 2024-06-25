@@ -1,0 +1,137 @@
+.filter-popup {
+  margin-top: 5px;
+}
+
+.filtros-opciones {
+  min-width: 300px;
+}
+
+.filtros-values {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.filtros-header {
+  margin-bottom: 10px;
+}
+
+.checkbox-container {
+  align-items: center;
+}
+
+.filtros-opciones-principal {
+  width: 100%;
+  text-align: left;
+  padding: 4px;
+  border-radius: 4px;
+  margin: 4px 0 4px 0;
+}
+
+.filtros-opciones-principal:hover {
+  background-color: rgb(238, 244, 244);
+  border-radius: 4px;
+}
+
+.boton-desplegable-filtros i {
+  padding: 0px 7px 4px 7px;
+  margin-left: 4px;
+}
+
+.container-filtros {
+  position: relative;
+  display: flex;
+}
+.boton-desplegable-filtros.limpiar {
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.filter-category {
+  position: relative;
+}
+
+span.filter-button {
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  left: 26%;
+  margin-top: 2px;
+}
+
+.filtros-content-responsive-element {
+  margin: 0px 20px 0px 20px;
+  padding: 20px 20px 20px 12px;
+  border: none;
+  color: var(--color-secundario);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  border-radius: 5px;
+}
+
+.espacio-costado {
+  margin-right: 3px;
+}
+
+.filtros-responsive-header {
+  margin-left: 10px;
+  margin-top: 2px;
+}
+
+.responsive-aplicar-filtros {
+  display: none;
+}
+
+.limpiar-filtros {
+  display: flex;
+  align-items: center;
+}
+
+.hover-icono:hover{
+  color: #005896;
+}
+
+@media (max-width: 830px) {
+  /*670*/
+
+  .responsive-aplicar-filtros {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .responsive-aplicar-filtros button {
+    box-shadow: none;
+    border-radius: 4px;
+    padding: 2px 10px;
+    font-size: small;
+  }
+  .container-filtros.filtros-visibles {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Cambiado a 'center' */
+    position: fixed;
+    top: 65px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-fondo-modales);
+    z-index: 9999;
+  }
+
+  .filtros-opciones {
+    max-height: 90%;
+    overflow-y: scroll;
+    /* height: 90vh;
+    width: 90vh; */
+  }
+
+  .filter-popup {
+    position: fixed;
+    top: 5%;
+    width: 90%;
+    height: 90%;
+  }
+  .filtros-values {
+    max-height: 90%;
+  }
+}

@@ -1,0 +1,283 @@
+/* MODAL contenedor*/
+.modal-2-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-fondo-modales);
+    z-index: 9999;
+}
+
+.modal-2-content {
+    margin-right: 22px;
+    width: 94%;
+    height: 89%;
+    border-radius: 20px;
+    display: flex;
+
+}
+
+
+.cuerpo-scrollable {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+
+
+/* Contenedor del visualizador*/
+.modal-2-content-visualizador {
+    background-color: rgba(18, 45, 64, 0.8);
+    flex: 55%;
+    border-radius: 18px 0px 0px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.modal-2-content-visualizador-titulo {
+    width: 100%;
+    background-color: var(--color-secundario);
+    padding: 22px 40px 22px 40px;
+    color: white;
+    border-radius: 18px 0px 0px 0px;
+    font-weight: 600;
+    font-size: 23px;
+    line-height: 37px;
+
+}
+
+
+.contenedor-boton-descargartodo{
+    margin-top: auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* VISUALIZADOR DE DOCUMENTOS */
+/* .visualizador{
+
+} */
+
+
+
+
+
+
+
+
+/* Contenedor del formulario.*/
+.modal-2-content-formularios {
+    background-color: white;
+    flex: 45%;
+    border-radius: 0 18px 18px 0;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.modal-2-content-formularios-cabecera {
+    padding: 40px 30px 40px 30px;
+}
+
+
+.modal-2-content-formularios-cabecera-labels {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-2-content-formularios-cabecera-labels-title {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+    color: var(--color-secundario);
+
+}
+
+
+.titulo-etapa {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 32px;
+}
+
+.formularios-botonera {
+    padding: 10px 10px 15px 20px;
+    margin-top: auto;
+}
+
+
+
+.subtitulo {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 25px;
+    margin-bottom: 10px;
+}
+
+.subtitulo2{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 32px;
+    color: #68778D;
+    margin-top: 20px;
+}
+
+.subtitulo3{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 25px;
+    color: #676767;
+}
+
+
+
+/* VALIDAR EVIDENCIA */
+.validar-evidencia {
+    padding: 0px 20px 20px 30px;
+
+}
+
+
+
+
+/* CONFIGURAR PRE ARBITRAJE */
+.configurar-prearbitraje {
+    padding: 0px 20px 20px 30px;
+
+}
+
+.configurar-prearbitraje-formulario{
+    padding: 0px 20px 20px 30px;
+}
+
+
+
+
+
+
+
+
+/* SELECCION DOCUMENTOS */
+.seleccion-documentos {
+    padding: 0px 20px 20px 30px;
+
+}
+
+.ocultar-input{
+    display: none;
+}
+
+/*Cuadrito del archivo cargado */
+.archivo-subido{
+    border-radius: 3px;
+    padding: 10px;
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.a-s-valido{ /*para cuando se cargo bien*/
+    border: 1px solid var(--color-variante-secundario);
+    background-color: var(--color-7);
+    color: var(--color-secundario);
+}
+
+
+.a-s-invalido{ /*para cuando se cargo mal*/
+    border: 1px solid var(--color-error);
+    background-color: white;
+    color: var(--color-error);
+}
+
+.archivo-subido-eliminar-cruz{ /*para cuando se cargo mal, usa otro icono y diseño*/
+    color: var(--color-error);
+    border: none;
+    background-color: white;
+}
+
+
+.archivo-subido-nombre{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.archivo-subido-eliminar{
+    color: var(--color-variante-secundario);
+    border: none;
+    background-color: var(--color-7);
+}
+
+.archivo-subido-eliminar:hover{
+    color: var(--color-secundario);
+}
+
+
+.archivo-subido-msjError{ /*el mensaje que aparece abajo del cuadro del archivo mal cargado*/
+    color: var(--color-error);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 21px;
+}
+
+.archivos-subidos-mostrar-cantidad{ /*muestra la cantidad de archivos cargados*/
+    color: var(--color-secundario);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 21px;
+}
+
+
+
+
+
+/* Diseño seguimiento 3 etapas*/
+.modal-2-content-formularios-cabecera-seguimiento {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 70px 0 50px;
+}
+
+
+.barra {
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-5);
+}
+
+
+.circulo {
+    height: 16px;
+    width: 30px;
+    border-radius: 100%;
+    background-color: white;
+    border: 3px solid var(--color-5);
+}
+
+
+.barra-etapa-activa {
+    background-color: var(--color-primario);
+}
+
+.circulo-etapa-activa {
+    border: 3px solid var(--color-primario);
+}
+
+.circulo-etapa-completa {
+    border: 3px solid var(--color-primario);
+    background-color: var(--color-primario);
+}
+
+.activa {
+    color: var(--color-primario);
+}

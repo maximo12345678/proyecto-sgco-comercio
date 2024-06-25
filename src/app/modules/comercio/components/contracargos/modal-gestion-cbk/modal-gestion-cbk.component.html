@@ -1,0 +1,160 @@
+<div class="modal-container">
+    <div class="modal-content">
+        <div class="modal-content-cuerpo">
+            <div class="cuerpo-scrollable">
+
+                <div class="modal-content-cabecera">
+                    <span class="modal-content-titulo">Gestionar Caso</span>
+                    <button class="modal-close" (click)="closeModal()">
+                        <svg class="close-modal-icon" xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20">
+                            <path
+                                d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="modal-datos-contracargo-box">
+                    <div class="modal-datos-contracargo-content cabecera">
+                        <div class="modal-datos-contracargo-content-cabecera">
+                            <div class="item">
+                                <div class="cabecera-nombre">CASO</div>
+                                <div class="cabecera-valor">
+                                    {{contracargo.nombreMarca[0].toUpperCase()}}{{contracargo.idMarca}}</div>
+                            </div>
+                            <div class="item">
+                                <div class="cabecera-nombre">Marca</div>
+                                <div class="cabecera-valor">{{contracargo.nombreMarca}}</div>
+                            </div>
+                            <div class="item">
+                                <div class="cabecera-estado">{{contracargo.estado}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="vistaActual === 'default'" class="modal-datos-contracargo-content">
+
+                        <div class="lista-datos">
+                            <div class="lista-datos-elemento">
+                                <div class="item">
+                                    <div class="item-nombre">Marca</div>
+                                    <div class="item-valor">{{contracargo.idMarca}}</div>
+                                </div>
+                            </div>
+
+                            <div class="lista-datos-elemento">
+                                <div class="item">
+                                    <div class="item-nombre">Comercio</div>
+                                    <div class="item-valor">{{contracargo.nombreComercio}}</div>
+                                </div>
+                            </div>
+
+                            <div class="lista-datos-elemento">
+                                <div class="item">
+                                    <div class="item-nombre">Motivo</div>
+                                    <div class="item-valor"> {{contracargo.motivoId}} - {{contracargo.motivoDesc}}</div>
+                                </div>
+                            </div>
+
+                            <div class="lista-datos-elemento">
+                                <div class="item">
+                                    <div class="item-nombre">Fecha Transacción</div>
+                                    <div class="item-valor">{{contracargo.recepcion}}</div>
+                                </div>
+                            </div>
+
+                            <div class="lista-datos-elemento">
+                                <div class="item">
+                                    <div class="item-nombre">Monto CBK</div>
+                                    <div class="item-valor">$ {{formatearMonto(contracargo.montoCbk)}} CLP</div>
+                                </div>
+                            </div>
+
+
+                            <div class="lista-datos-elemento">
+                                <div class="item">
+                                    <div class="item-nombre">Dias para cierre</div>
+                                    <div class="item-valor">{{contracargo.diasParaCierre}}</div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div *ngIf="vistaActual === 'default' && cbkPorGestionar " class="modal-datos-contracargo-content">
+                        <div class="modal-datos-contracargo-content-botones">
+                            <div></div>
+                            <div class="espacio"></div>
+                            <div class="modal-datos-contracargo-content-botones-item">
+                                <button (click)="cambiarRechazarOAceptarCaso(VistasDisponibles.Rechazar)"
+                                    class="boton-rechazar-nuevo">
+                                    Rechazar
+                                </button>
+                            </div>
+                            <div class="modal-datos-contracargo-content-botones-item">
+                                <button (click)="cambiarRechazarOAceptarCaso(VistasDisponibles.Aceptar)"
+                                    class="boton-gestion-caso boton-aceptar-nuevo">
+                                    Aceptar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="vistaActual === 'default'" class="modal-tabla-historial">
+                        <span class="modal-tabla-historial-titulo">Historial del caso</span>
+                        <div class="historial-loader" *ngIf="loadingHistorial; else elseBlock">
+                            <div class="espacio-abajo"></div>
+                            <div class="spinner"></div>
+                            <div class="espacio-abajo"></div>
+                        </div>
+                        <ng-template #elseBlock>
+
+                            <div class="espacio-abajo"></div>
+                            <div *ngIf="!historialCaso || historialCaso.length === 0; else elseHistorial"
+                                class="mensaje-tablas">
+                                <span><i class="fas fa-exclamation-circle"></i> No se han encontrado datos para el caso
+                                    seleccionado</span>
+                            </div>
+
+                            <ng-template #elseHistorial>
+                                <table class="tabla-contracargos historial">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha </th>
+                                            <th>Etapa </th>
+                                            <th>Estado </th>
+                                            <th>Descripción </th>
+                                            <th>Usuario </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let registro of historialCaso; let i = index">
+                                            <td>{{formatFechaGuion(registro.fechaContracargo)}}</td>
+                                            <td title={{registro.etapa}}>{{registro.etapa}}</td>
+                                            <td title={{registro.estado}}>{{registro.estado}}</td>
+                                            <td title={{registro.estadoDescripcion}} *ngIf="registro.estadoDescripcion">
+                                                {{registro.estadoDescripcion}}</td>
+                                            <td style="display: flex; justify-content: center;"
+                                                *ngIf="!registro.estadoDescripcion">-</td>
+                                            <td title={{registro.usuario}}>{{registro.usuario}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </ng-template>
+
+                        </ng-template>
+                    </div>
+                </div>
+
+            </div>
+            <app-modal-gestion-aceptar *ngIf="vistaActual ==='aceptar'" [contracargo]="contracargo"
+                (cancelOperation)="onGestionCancel()" (closeWindow)="closeModal()"></app-modal-gestion-aceptar>
+            <app-modal-gestion-rechazar *ngIf="vistaActual ==='rechazar'" [contracargo]="contracargo"
+                (cancelOperation)="onGestionCancel()" (closeWindow)="closeModal()"></app-modal-gestion-rechazar>
+
+        </div>
+
+        <div class="espacio-abajo"></div>
+
+    </div>
+</div>

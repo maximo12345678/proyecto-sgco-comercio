@@ -1,0 +1,109 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs '18.16.0'        
+    }
+
+   options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+    }
+
+    stages {
+        stage('Preparation') {
+            steps {
+                echo 'Proceso de Preparación..............'
+                cleanWs()
+                git branch: 'master', credentialsId: 'jenkins-gitbb', url: 'https://bitbucket.org/multicaja-cloud/mcf-bo-sgc-comercio.git'
+                
+               
+            }
+        }
+
+        stage('Backup') {
+           steps {
+                echo 'Respaldo del proyecto......'                          
+                
+            }
+        }
+
+        stage('Build'){
+            steps{
+                echo 'Construcción del Proyecto Microfront......'
+                    sh 'npm install && npm run build'                    
+                    
+            }
+        }
+
+        stage('Analysis SonarQube') {           
+            steps{
+                    echo 'SonarQube......'
+                    script {
+                        scannerHome = tool 'sq-4.8.0.2856'
+                        }
+                        withSonarQubeEnv('sq_bst') {
+                            sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=${JOB_NAME} -Dsonar.sources=src/ -Dsonar.exclusions=src/assets/vendor/**"
+                    }
+                }
+        }   
+        
+        stage("Quality Gate") {
+            steps{
+                echo 'Validación de Calidad del Código'
+                // timeout(time: 1, unit: 'HOURS') {
+                //     waitForQualityGate abortPipeline: true
+                // }
+            }
+        }
+
+        stage('Testing') {
+           steps {
+                echo 'Pruebas Funcionales definidas por QA'
+            }
+        }
+
+        stage('Deploy Infra') {
+            steps {
+                echo 'Despliegue Infra CloudFormation......'
+                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-creds-dev-evolution', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh '''
+                            aws cloudformation deploy --template-file ${WORKSPACE}/template.yaml --stack-name mcf-bo-sgc-stack-comercio --region $AWS_DEFAULT_REGION --capabilities CAPABILITY_NAMED_IAM
+                        '''           
+                    }
+            }
+        }
+
+        stage('Deploy Microfront') {
+           steps {
+                echo 'Despliegue del proyecto en Ambiente Desarrollo......'
+                    withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'aws-creds-dev-evolution', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh '''
+                            aws s3 rm s3://comercio.sgco.cl --recursive            
+                            aws s3 cp ${WORKSPACE}/dist/comercio s3://comercio.sgco.cl --recursive                            
+                        '''                       
+                }
+            }
+        }        
+    }
+    post {
+    success {
+      office365ConnectorSend webhookUrl: "${WEBHOOK_TEAMS}",
+            color: '#00FF00',
+            factDefinitions: [[name: "Proyecto", template: "KLAP: Sistema Gestión Contracargo"],
+            [name: "Pipeline", template: "${env.JOB_NAME}"],
+            [name: "Infraestructura", template: "Microfront - NodeJs + Angular"],
+            [name: "Nro. de Ejecución", template: "${env.BUILD_NUMBER}"]],
+            status: "Success"  
+    }
+
+    failure {
+       office365ConnectorSend webhookUrl: "${WEBHOOK_TEAMS}",
+            color: '#FF0000',
+            factDefinitions: [[name: "Proyecto", template: "KLAP: Sistema Gestión Contracargo"],
+            [name: "Pipeline", template: "${env.JOB_NAME}"],
+            [name: "Infraestructura", template: "Microfront - NodeJs + Angular"],
+            [name: "Nro. de Ejecución", template: "${env.BUILD_NUMBER}"]],
+            status: "Failure"   
+    }
+}
+}   

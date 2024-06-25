@@ -1,0 +1,120 @@
+{
+    "filtro-1": {
+        "nombre": "Marca",
+        "id": 1,
+        "opciones": {
+            "opcion-1":
+            {
+                "value": "Mastercard", 
+                "id": 1
+            },
+            "opcion-2":
+            {
+                "value": "Visa", 
+                "id": 2
+            }
+        }
+    },
+    "filtro-2": {
+        "nombre": "Etapa",
+        "id": 2,
+        "opciones": {
+            "opcion-1":
+            {
+                "value": "Recepcion", 
+                "id": 1,
+                "marca_id": 1
+            },
+            "opcion-2":
+            {
+                "value": "Contracargo", 
+                "id": 2,
+                "marca_id": 1
+            },
+            "opcion-3":
+            {
+                "value": "Disputa", 
+                "id": 3,
+                "marca_id": 1
+            },
+            "opcion-4":
+            {
+                "value": "Pre-arbitraje", 
+                "id": 4,
+                "marca_id": 1
+            },
+            "opcion-5":
+            {
+                "value": "Arbitraje", 
+                "id": 5,
+                "marca_id": 1
+            },
+            "opcion-6":
+            {
+                "value": "Resolucion", 
+                "id": 6,
+                "marca_id": 1
+            },
+            "opcion-7":
+            {
+                "value": "Apelacion", 
+                "id": 7,
+                "marca_id": 1
+            },
+            "opcion-8":
+            {
+                "value": "Contracargo", 
+                "id": 9,
+                "marca_id": 2
+            },
+            "opcion-9":
+            {
+                "value": "Pre-arbitraje", 
+                "id": 10,
+                "marca_id": 2
+            },
+            "opcion-10":
+            {
+                "value": "Arbitraje", 
+                "id": 11,
+                "marca_id": 2
+            },
+            "opcion-11":
+            {
+                "value": "Resolucion", 
+                "id": 12,
+                "marca_id": 2
+            },
+            "opcion-12":
+            {
+                "value": "Apelacion", 
+                "id": 13,
+                "marca_id": 2
+            }
+        
+        }
+    },
+    "filtro-3": {
+        "nombre": "Estado",
+        "id": 3,
+        "opciones": {
+            "opcion-1":
+            {
+                "value": "Recepcion", 
+                "id": 1,
+                "marca_id": 1
+            },
+            "opcion-2":
+            {
+                "value": "Contracargo", 
+                "id": 2,
+                "marca_id": 1
+            }
+        }
+    },
+        "filtro-4": {
+        "nombre": "Rango de fecha",
+        "id": 4,
+        "opciones": {}
+    }
+}

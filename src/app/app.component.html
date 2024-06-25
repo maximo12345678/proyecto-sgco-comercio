@@ -1,0 +1,13 @@
+<div class="contenedor-webprivada">
+    <div *ngIf="awaitingLogin">
+        <div class="loading-wrapper">
+            <div class="loading-text">Cargando</div>
+            <div class="loading-circle circle"></div>
+            <div class="loading-circle-small circle"></div>
+        </div>
+    </div>
+    <div *ngIf="!awaitingLogin">
+        <app-home></app-home>
+        <router-outlet></router-outlet>
+    </div>
+</div>

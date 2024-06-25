@@ -1,0 +1,37 @@
+<div>
+
+    <div class="tapada-de-scroll"></div>
+
+    <!-- Navegador superior responsive-->
+    <div class="toolbar">
+        <div class="toolbar-menu">
+            <div>
+                <span class="toolbar-titulo">SISTEMA DE GESTION DE CONTRACARGOS</span>
+            </div>
+
+            <div class="spacer"></div>
+        </div>
+    </div>
+
+
+    <div class="nuevo-menu">
+        <div id="espacio" class="spacer"></div>
+
+        <div>
+            <a routerLink="/mcf-bst-contra-cargo/contracargos" (click)="seleccionarBotonMenu(1)"
+                [ngClass]="{'boton-nuevo' : true, 'seleccionado-menu-nuevo' : botonMenuSeleccionado === 1}">
+                <button [ngClass]="{'boton-nuevo': true, 'seleccionado-menu-nuevo': botonMenuSeleccionado === 1}">
+                    Gestión de Contracargos
+                </button>
+            </a>
+
+            <a routerLink="/mcf-bst-contra-cargo/configuraciones" (click)="seleccionarBotonMenu(2)"
+                [ngClass]="{'boton-nuevo' : true, 'seleccionado-menu-nuevo' : botonMenuSeleccionado === 2}">
+                <button [ngClass]="{'boton-nuevo': true, 'seleccionado-menu-nuevo': botonMenuSeleccionado === 2}">
+                    Configuraciones
+                </button>
+            </a>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,117 @@
+<div *ngIf="!cambioEstado && !confirmandoRechazo">
+    <div class="modal-rechazar-caso">
+        <div class="modal-rechazar-caso-cuerpo">
+            <h2 class="titulo-etapa">RECHAZAR CASO</h2>
+            <span>Para rechazar debes adjuntar documentacion de evidencia.</span>
+        </div>
+
+        <div class="input-arrastrar-archivos" (click)="fileInput.click()" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+            <span class="input-arrastrar-archivos-icono"><i class="bi bi-cloud-upload-fill"></i></span>
+            <p class="input-arrastrar-archivos-titulo">Arrastra & suelta tus archivos</p>
+            <p class="input-arrastrar-archivos-subtitulo">Solo formato PDF, JPG o JPEG.</p>
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".pdf, .jpg, .jpeg, .png"
+                multiple="5" hidden>
+        </div>
+        <span class="advertencia-maximo-archivos">Puedes adjuntar un máximo de 5 archivos.</span>
+
+
+        <div class="modal-contenedor-archivos-subidos">
+            <span *ngIf="selectedFiles.length>0" class="archivos-subidos-mostrar-cantidad">Cargados -
+                {{selectedFiles.length}}/{{limiteArchivos}}</span>
+            <div *ngFor="let file of selectedFiles; let i = index">
+                <div class="archivo-subido a-s-valido">
+                    <span class="archivo-subido-nombre">{{ file.name }}</span>
+                    <button (click)="borrarArchivo(i, 'selected')" class="archivo-subido-eliminar"><i
+                            class="bi bi-trash3-fill"></i></button>
+                </div>
+            </div>
+
+            <div *ngFor="let file of rejectedFiles; let i = index">
+                <div class="archivo-subido a-s-invalido">
+                    <span class="archivo-subido-nombre">{{ file.fileData.name }}</span>
+                    <button (click)="borrarArchivo(i, 'rechaced')" class="archivo-subido-eliminar-cruz"><i
+                            class="bi bi-x-circle-fill"></i></button>
+                </div>
+                <span class="archivo-subido-msjError">{{file.msjError}}</span>
+            </div>
+
+        </div>
+
+        <div class="modal-input-observaciones">
+            <label for="">Observaciones</label>
+            <textarea class="input-observaciones" placeholder="Ingresar"
+                [(ngModel)]="inputObservacionesRechazo"></textarea>
+        </div>
+    </div>
+
+    <div class="formularios-botonera">
+        <div class="modal-datos-contracargo-content-botones">
+            <div class="espacio"></div>
+
+            <div class="modal-datos-contracargo-content-botones-item">
+                <button class="boton-rechazar-nuevo" (click)="closeModal()">Cancelar</button>
+            </div>
+
+            <div class="espacio-izquierda"></div>
+
+            <div class="modal-datos-contracargo-content-botones-item">
+                <button class="boton-gestion-caso boton-aceptar-nuevo" [disabled]="!puedeRechazar"
+                    (click)="solicitarConfirmacion()">
+                    Rechazar </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!cambioEstado && confirmandoRechazo">
+    <div class="mensaje-satisfactorio">
+        <div class="mensaje-satisfactorio-icono warning">
+            <i class="fas fa-window-minimize"></i>
+        </div>
+        <div class="mensaje-satisfactorio-texto">RECHAZAR CASO</div>
+        <br>
+        <div><b>¿Estas seguro de rechazar el caso?</b></div>
+        <div>Esta acción es irreversible</div>
+        <div class="espacio-abajo"></div>
+        <div class="modal-datos-contracargo-content-botones">
+            <div class="espacio"></div>
+
+            <div class="modal-datos-contracargo-content-botones-item">
+                <button class="boton-notificar" (click)="seguirEditando()">Seguir Editando</button>
+            </div>
+
+            <div class="espacio-izquierda"></div>
+
+            <div class="modal-datos-contracargo-content-botones-item">
+                <button class="boton-gestion-caso primario" (click)="rechazarContracargo()">
+                    Si, Rechazar </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="cambioEstado" class="mensaje-satisfactorio">
+    <div class="historial-loader" *ngIf="loadingCambioEstado; else elseBlock">
+        <div class="espacio-abajo"></div>
+        <div class="spinner"></div>
+        <div class="espacio-abajo"></div>
+    </div>
+    <ng-template #elseBlock>
+        <div class="mensaje-satisfactorio-icono" [ngClass]="{'error': operationFailed}">
+            <i *ngIf="operationFailed;else elseBlock" class="fas fa-window-minimize"></i>
+            <ng-template #elseBlock>
+                <i class="fas fa-window-minimize fa-check"></i>
+            </ng-template>
+        </div>
+        <div class="mensaje-satisfactorio-texto">{{mensajeResultadoOperacion}}</div>
+        <div *ngIf="!operationFailed" class="mensaje-satisfactorio-texto-subtitulo">Se notificará para su respectiva
+            gestión.
+        </div>
+        <div class="espacio-abajo"></div>
+        <button (click)="closeModal()" class="mensaje-satisfactorio-boton-entendido filled"
+            [class.error]="operationFailed">
+            Entendido
+        </button>
+    </ng-template>
+</div>

@@ -1,0 +1,337 @@
+.tabla-contracargos {
+    width: auto;
+    min-width: 100%;
+    white-space: nowrap;
+    border-collapse: collapse;
+    border-radius: 5px;
+}
+
+.tabla-contracargos th,
+.tabla-contracargos td {
+    padding: 10px;
+    text-align: center;
+    /* Centra horizontalmente */
+    vertical-align: middle;
+    /* Centra verticalmente */
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tabla-contracargos tr {
+    border-bottom: 1px solid #e6e9f0;
+    border-right: 1px solid #e6e9f0;
+}
+
+.tabla-contracargos.historial tr {
+    border-right: none;
+}
+
+table.tabla-contracargos thead tr {
+    border: none;
+}
+
+table.tabla-contracargos thead tr th {
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    background-color: var(--color-secundario);
+    text-align: center;
+    /* Asegura que los encabezados estén centrados */
+}
+
+table.tabla-contracargos thead tr th:first-child {
+    border-top-left-radius: 14px;
+    /* border-bottom-left-radius: 14px; */
+}
+
+table.tabla-contracargos thead tr th:last-child {
+    border-top-right-radius: 14px;
+    /* border-bottom-right-radius: 14px; */
+    box-shadow:
+        1rem -2.1rem 0 .6rem white,
+        1rem 2.1rem 0 .6rem white;
+}
+
+
+
+
+.hover-icono:hover {
+    color: #005896;
+}
+
+.no-aplicar-estilos-campo-limite {
+    max-width: none;
+    /* Anula el ancho máximo para esta celda */
+    overflow: visible;
+    /* Permite que el contenido se muestre completamente */
+    text-overflow: unset;
+    /* Restablece la propiedad text-overflow a su valor predeterminado */
+}
+
+
+.registro-par {
+    background-color: white;
+    /* Color para registros pares */
+}
+
+.registro-impar {
+    background-color: #F9F9F9;
+    /* Color para registros impares */
+}
+
+.tabla-contracargos thead tr th i:hover {
+    cursor: pointer;
+    color: var(--color-variante-primario);
+}
+
+.tabla-contracargos tbody tr:hover {
+    background-color: var(--color-apoyo1);
+}
+
+.tabla-contracargos tbody tr td {
+    color: black;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.tabla-contracargos th i {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+/* campo caso */
+.tabla-campo-caso {
+    display: flex;
+    flex-direction: column;
+    padding-right: 50px;
+}
+
+.tabla-campo-caso-id {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 25px;
+}
+
+.tabla-campo-caso-marca {
+    color: var(--color-apoyo4);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 21px;
+}
+
+.barra-color-rojo {
+    border-left: 3px solid var(--color-error);
+}
+
+.barra-color-amarillo {
+    border-left: 3px solid var(--color-alert);
+}
+
+.barra-color-verde {
+    border-left: 3px solid var(--color-primario);
+}
+
+
+/* campo boton gestionar */
+.tabla-campo-gestionar button {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 21px;
+    color: var(--color-secundario);
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+
+}
+
+
+
+
+
+
+
+/* PAGINACION */
+.cantidad-resultados-tabla-contracargos {
+    color: black;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+}
+
+/* .paginacion-tabla-contracargos {} */
+
+.pagination {
+    display: flex;
+    align-items: center;
+}
+
+.pagination-button {
+    border: none;
+    background: none;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: var(--color-apoyo1);
+}
+
+.pagination-page {
+    margin: 0 5px;
+    cursor: pointer;
+    padding: 8px;
+    border: none;
+    background-color: white;
+}
+
+.pagination-ellipsis {
+    margin: 0 5px;
+}
+
+.boton-pagina-seleccionado {
+    background-color: var(--color-6);
+}
+
+
+@media(max-width: 670px) {
+
+    /*Responsive sacamos el texto de abajo de la tabla*/
+    .cantidad-resultados-tabla-contracargos {
+        display: none;
+    }
+
+    /*Responsive ojo grande de gesiontar caso*/
+    .ojo-tabla-gestionar {
+        font-size: 1.3rem;
+        margin-left: 20px;
+    }
+
+}
+
+
+@media(max-width: 1145px) {
+
+    .tabla-contracargos thead th:first-child,
+    .tabla-contracargos tbody td:first-child,
+    .tabla-contracargos thead th:last-child,
+    .tabla-contracargos tbody td:last-child {
+        position: sticky;
+        left: 0;
+        right: 0;
+        /* z-index: 2; */
+        background-color: #fff;
+    }
+
+    .tabla-contracargos thead th:first-child,
+    .tabla-contracargos tbody td:first-child {
+        box-shadow: 8px 0px 5px -5px #bbbbbb;
+    }
+
+    .tabla-contracargos thead th:last-child,
+    .tabla-contracargos tbody td:last-child {
+        box-shadow: -8px 0px 5px -5px #888;
+    }
+
+    .tabla-contracargos thead th:first-child,
+    .tabla-contracargos thead th:last-child {
+        background-color: var(--color-secundario);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+    .tabla-contracargos {
+        /* Aplica estilos específicos para la tabla cuando la pantalla sea de 500px o menos */
+        font-size: 12px;
+        /* Reduce el tamaño de fuente */
+        border-radius: 3px;
+        /* Reduzca el radio del borde */
+    }
+
+    .tabla-contracargos th,
+    .tabla-contracargos td {
+        /* Reduce el padding para hacer los elementos más compactos */
+        padding: 8px;
+        max-width: 80px;
+        /* Reduzca el ancho máximo de las celdas */
+    }
+
+    table.tabla-contracargos thead tr th {
+        /* Reduce el tamaño de fuente de las celdas del encabezado */
+        font-size: 12px;
+    }
+
+    table.tabla-contracargos tbody tr td {
+        font-size: 11px;
+    }
+
+
+    .tabla-campo-caso-id {
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 25px;
+    }
+
+    .tabla-campo-caso-marca {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 21px;
+    }
+}
+
+
+/* CSS para versión móvil */
+@media (max-width: 600px) {
+
+    .tabla-contracargos th:nth-child(2),
+    .tabla-contracargos td:nth-child(2),
+    .tabla-contracargos th:nth-child(3),
+    .tabla-contracargos td:nth-child(3),
+    .tabla-contracargos th:nth-child(4),
+    .tabla-contracargos td:nth-child(4),
+    .tabla-contracargos th:nth-child(5),
+    .tabla-contracargos td:nth-child(5),
+    .tabla-contracargos th:nth-child(6),
+    .tabla-contracargos td:nth-child(6) {
+        display: none;
+    }
+
+    .detalle-info td{
+        background-color: rgb(37, 24, 24);
+        border: solid 1px gray;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .detalle-info-valor{
+        color: black;
+        text-align: right;
+    }
+
+    .detalle-info-titulo{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 25px;
+    }
+
+    .content-info{
+        display: flex;
+        flex-direction: row;
+    }
+
+
+}
+
+.boton-detalle-tabla {
+    border: none;
+    background-color: white;
+    display: block;
+}
